@@ -196,6 +196,9 @@ const CandidateForm = () => {
       ]);
       setFiles([null, null]);
       setErrors({});
+      
+      // Smooth scroll to top to show the green success alert banner
+      window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (error) {
       console.error("Submission failed:", error);
       const backendMessage = error.response?.data?.message || "An error occurred during submission. Please try again.";
