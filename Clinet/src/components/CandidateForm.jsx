@@ -198,7 +198,14 @@ const CandidateForm = () => {
       setErrors({});
       
       // Smooth scroll to top to show the green success alert banner
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      setTimeout(() => {
+        const successAlert = document.getElementById("success-alert");
+        if (successAlert) {
+          successAlert.scrollIntoView({ behavior: "smooth", block: "center" });
+        } else {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      }, 100);
     } catch (error) {
       console.error("Submission failed:", error);
       const backendMessage = error.response?.data?.message || "An error occurred during submission. Please try again.";
@@ -213,7 +220,10 @@ const CandidateForm = () => {
       <h1 className="form-title">MERN STACK MACHINE TEST</h1>
       
       {submitStatus.message && (
-        <div className={`status-alert ${submitStatus.success ? "status-success" : "status-error"}`}>
+        <div 
+          id={submitStatus.success ? "success-alert" : "error-alert"}
+          className={`status-alert ${submitStatus.success ? "status-success" : "status-error"}`}
+        >
           <div className={submitStatus.success === false ? "status-alert-title" : ""}>
             {submitStatus.message}
           </div>
