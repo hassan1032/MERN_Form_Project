@@ -169,6 +169,20 @@ const CandidateForm = () => {
       return;
     }
 
+    const performScrollToTop = () => {
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+
+        const successAlert = document.getElementById("success-alert");
+        const errorAlert = document.getElementById("error-alert");
+        const target = successAlert || errorAlert;
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }, 100);
+    };
     setIsSubmitting(true);
 
     try {
@@ -197,19 +211,13 @@ const CandidateForm = () => {
       setFiles([null, null]);
       setErrors({});
       
-      // Smooth scroll to top to show the green success alert banner
-      setTimeout(() => {
-        const successAlert = document.getElementById("success-alert");
-        if (successAlert) {
-          successAlert.scrollIntoView({ behavior: "smooth", block: "center" });
-        } else {
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        }
-      }, 100);
+      performScrollToTop();
     } catch (error) {
       console.error("Submission failed:", error);
       const backendMessage = error.response?.data?.message || "An error occurred during submission. Please try again.";
       setSubmitStatus({ success: false, message: backendMessage });
+      
+      performScrollToTop();
     } finally {
       setIsSubmitting(false);
     }
